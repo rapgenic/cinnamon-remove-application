@@ -77,7 +77,7 @@ class ArchRemoveWindow:
         treeview.show()
 
         scrolledwindow = Gtk.ScrolledWindow()
-        scrolledwindow.set_shadow_type(Gtk.ShadowType.ETCHED_OUT)
+        #scrolledwindow.set_shadow_type(Gtk.ShadowType.ETCHED_OUT)
         scrolledwindow.set_size_request(150, 150)
         scrolledwindow.add(treeview)
         scrolledwindow.show()
@@ -88,6 +88,8 @@ class ArchRemoveWindow:
         if response == Gtk.ResponseType.OK:
             executer = RemoveExecuter(package)
             executer.start()
+            executer.join()
+            sys.exit(0)
         elif response == Gtk.ResponseType.CANCEL:
             sys.exit(0)
         warnDlg.destroy()
@@ -99,4 +101,4 @@ if __name__ == "__main__":
 
     mainwin = ArchRemoveWindow(sys.argv[1])
 
-Gtk.main()
+#Gtk.main()
