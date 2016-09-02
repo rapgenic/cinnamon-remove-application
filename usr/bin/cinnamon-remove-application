@@ -1,5 +1,12 @@
 #!/usr/bin/python2
 
+# authors: Linux Mint team
+#	   Giulio Girardi (rapgenic)
+#
+# Arch linux version of cinnamon-remove-application (enables the uninstall option in the right click Cinnamon application menu)
+#
+# version 0.0.1
+
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
