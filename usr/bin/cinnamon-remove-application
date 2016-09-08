@@ -47,7 +47,7 @@ class ArchRemoveWindow:
     def __init__(self, desktopFile):
         self.desktopFile = desktopFile
 
-        (status, output) = commands.getstatusoutput("pkgfile " + self.desktopFile)
+        (status, package) = commands.getstatusoutput("pacman -Qoq " + self.desktopFile)
 
         if status != 0:
             warnDlg = Gtk.MessageDialog(None, 0, Gtk.MessageType.WARNING, Gtk.ButtonsType.YES_NO, _("This menu item is not associated to any package. Do you want to remove it from the menu anyway?"))
@@ -60,7 +60,7 @@ class ArchRemoveWindow:
             warnDlg.destroy()
             sys.exit(0)
             
-        package = re.search("(?<=\/)\w+", output).group(0)
+        #package = re.search("(?<=\/)\w+", output).group(0)
 
         warnDlg = Gtk.MessageDialog(None, 0, Gtk.MessageType.WARNING, Gtk.ButtonsType.OK_CANCEL, _("The following packages will be removed:"))
         warnDlg.vbox.set_spacing(10)
