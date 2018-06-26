@@ -1,29 +1,24 @@
 #!/usr/bin/python2
 
 # authors: Linux Mint team
-#	   Giulio Girardi (rapgenic)
+#          Giulio Girardi (rapgenic)
 #
 # Arch linux version of cinnamon-remove-application (enables the uninstall option in the right click Cinnamon application menu)
 #
-# version 0.0.1
+# version 0.0.3
 
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
-try:
-    import sys
-    import string
-    import os
-    import commands
-    import threading
-    import tempfile
-    import gettext
-    import re
-
-except Exception, detail:
-    print detail
-    sys.exit(1)
+import sys
+import string
+import os
+import commands
+import threading
+import tempfile
+import gettext
+import re
 
 from subprocess import Popen
 
@@ -38,9 +33,10 @@ class RemoveExecuter(threading.Thread):
         self.package = package
 
     def run(self):
-        cmd = ["sudo", "/usr/bin/pacman", "-Rc", "--noconfirm", "--noprogressbar", self.package]
+        cmd = ["pkexec", "/usr/bin/pacman", "-Rc", "--noconfirm", "--noprogressbar", self.package]
         comnd = Popen(cmd)
         sys.exit(comnd.wait())
+
 
 class ArchRemoveWindow:
 
@@ -54,13 +50,13 @@ class ArchRemoveWindow:
             warnDlg.vbox.set_spacing(10)
             response = warnDlg.run()
             if response == Gtk.ResponseType.YES:
-                print "removing '%s'" % self.desktopFile
+                print("removing '%s'" % self.desktopFile)
                 os.system("rm -f '%s'" % self.desktopFile)
                 os.system("rm -f '%s.desktop'" % self.desktopFile)
             warnDlg.destroy()
             sys.exit(0)
-            
-        #package = re.search("(?<=\/)\w+", output).group(0)
+
+        # package = re.search("(?<=\/)\w+", output).group(0)
 
         warnDlg = Gtk.MessageDialog(None, 0, Gtk.MessageType.WARNING, Gtk.ButtonsType.OK_CANCEL, _("The following packages will be removed:"))
         warnDlg.vbox.set_spacing(10)
@@ -84,7 +80,7 @@ class ArchRemoveWindow:
         treeview.show()
 
         scrolledwindow = Gtk.ScrolledWindow()
-        #scrolledwindow.set_shadow_type(Gtk.ShadowType.ETCHED_OUT)
+        # scrolledwindow.set_shadow_type(Gtk.ShadowType.ETCHED_OUT)
         scrolledwindow.set_size_request(150, 150)
         scrolledwindow.add(treeview)
         scrolledwindow.show()
@@ -101,6 +97,7 @@ class ArchRemoveWindow:
             sys.exit(0)
         warnDlg.destroy()
 
+
 if __name__ == "__main__":
     # Exit if the given path does not exist
     if len(sys.argv) < 2 or not os.path.exists(sys.argv[1]):
@@ -108,4 +105,3 @@ if __name__ == "__main__":
 
     mainwin = ArchRemoveWindow(sys.argv[1])
 
-#Gtk.main()
